@@ -1,103 +1,100 @@
 # DesignPatterns
 Meu aprendizado no uso de "Design Patterns".
 
-Padrões de Criação:
-=
+### Padrões de Criação:
 
-<em><b>Abstract Factory</b></em>
+> Abstract Factory
    
-Provê uma interface para criar famílias de objetos relacionados ou inter-dependentes sem especificar suas classes concretas.
+- Provê uma interface para criar famílias de objetos relacionados ou inter-dependentes sem especificar suas classes concretas.
 
-<em><b>Builder</b></em>
+> Builder
 
-Separa a construção de um objeto complexo da sua representação de forma que o mesmo processo de construção possa criar representações diferentes.
+- Separa a construção de um objeto complexo da sua representação de forma que o mesmo processo de construção possa criar representações diferentes.
 
-<em><b>Factory Method</b></em>
+> Factory Method
     
-Define uma interface para criar um objeto, mas deixa as subclasses decidirem qual classe instanciar. O padrão Factory Method deixa uma classe repassar a responsabilidade de instanciação para subclasses.
+- Define uma interface para criar um objeto, mas deixa as subclasses decidirem qual classe instanciar. O padrão Factory Method deixa uma classe repassar a responsabilidade de instanciação para subclasses.
 
-<em><b>Prototype</b></em>
+> Prototype
     
-Especifica os tipos de objetos a criar usando uma instância-protótipo e cria novos objetos copiando este protótipo.
+- Especifica os tipos de objetos a criar usando uma instância-protótipo e cria novos objetos copiando este protótipo.
 
-<em><b>Singleton</b></em>
+> Singleton
 
-Garante que uma classe tenha uma única instância e provê um ponto global de acesso à instância.
+- Garante que uma classe tenha uma única instância e provê um ponto global de acesso à instância.
 
-Padrões Estruturais:
-=
+### Padrões Estruturais:
 
-<em><b>Adapter</b></em>
+> Adapter
 
-Converte a interface de uma classe em outra interface com a qual os clientes estão prontos para lidar. O padrão Adapter permite que classes trabalhem conjuntamente apesar de interfaces incompatíveis.
+- Converte a interface de uma classe em outra interface com a qual os clientes estão prontos para lidar. O padrão Adapter permite que classes trabalhem conjuntamente apesar de interfaces incompatíveis.
 
-<em><b>Bridge</b></em>
+> Bridge
 
-Desacopla uma abstração de sua implementação de forma que as duas possam mudar independentemente uma da outra.
+- Desacopla uma abstração de sua implementação de forma que as duas possam mudar independentemente uma da outra.
 
-<em><b>Composite</b></em>
+> Composite
 
-Compõe objetos em estruturas de árvore para representar hierarquias Parte-Todo. O padrão Composite permite que clientes tratem objetos individuais e composições de objetos de uniformemente.
+- Compõe objetos em estruturas de árvore para representar hierarquias Parte-Todo. O padrão Composite permite que clientes tratem objetos individuais e composições de objetos de uniformemente.
 
-<em><b>Decorator</b></em>
+> Decorator
 
-Adiciona responsabilidades a um objeto dinamicamente. Decoradores provêem uma alternativa flexível à herança para estender funcionalidade.
+- Adiciona responsabilidades a um objeto dinamicamente. Decoradores provêem uma alternativa flexível à herança para estender funcionalidade.
 
-<em><b>Facade</b></em>
+> Facade
 
-Provê uma interface unificada para um conjunto de interfaces num subsistema. O padrão Façade define uma interface de mais alto nível, deixando o subsistema mais fácil de usar.
+- Provê uma interface unificada para um conjunto de interfaces num subsistema. O padrão Façade define uma interface de mais alto nível, deixando o subsistema mais fácil de usar.
 
-<em><b>Flyweight</b></em>
+> Flyweight
 
-Usa o compartilhamento para dar suporte eficiente ao uso de um grande número de objetos de granularidade pequena.
+- Usa o compartilhamento para dar suporte eficiente ao uso de um grande número de objetos de granularidade pequena.
 
-<em><b>Proxy</b></em>
+> Proxy
 
-Provê um objeto procurador ou placeholder para um outro objeto para controlar o acesso a ele.
+- Provê um objeto procurador ou placeholder para um outro objeto para controlar o acesso a ele.
 
-Padrões Comportamentais:
-=
+### Padrões Comportamentais:
 
-<em><b>Chain of Responsibility</b></em>
+> Chain of Responsibility
 
-Evita acoplar o enviador de um pedido ao receptor dando oportunidade a vários objetos para tratarem do pedido. Os objetos receptores são encadeados e o pedido é passado na cadeia até que um objeto o trate.
+- Evita acoplar o enviador de um pedido ao receptor dando oportunidade a vários objetos para tratarem do pedido. Os objetos receptores são encadeados e o pedido é passado na cadeia até que um objeto o trate.
 
-<em><b>Command</b></em>
+> Command
 
-Encapsula um pedido em um objeto, permitindo assim parametrizar clientes com pedidos diferentes, enfileirar pedidos, fazer log de pedidos, e dar suporte a operações de undo.
+- Encapsula um pedido em um objeto, permitindo assim parametrizar clientes com pedidos diferentes, enfileirar pedidos, fazer log de pedidos, e dar suporte a operações de undo.
 
-<em><b>Interpreter</b></em>
+> Interpreter
 
-Dada uma linguagem, define uma representação de sua gramática e um interpretador que usa a representação da gramática para interpretar sentenças da linguagem.
+- Dada uma linguagem, define uma representação de sua gramática e um interpretador que usa a representação da gramática para interpretar sentenças da linguagem.
 
-<em><b>Iterator</b></em>
+> Iterator
 
-Provê uma forma de acessar os elementos de uma coleção de objetos seqüencialmente sem expor sua representação subjacente.
+- Provê uma forma de acessar os elementos de uma coleção de objetos seqüencialmente sem expor sua representação subjacente.
 
-<em><b>Mediator</b></em>
+> Mediator
 
-Define um objeto que encapsule a forma com a qual um conjunto de objetos interagem. O padrão Mediator promove o acoplamento fraco evitando que objetos referenciem uns aos outros explicitamente e permite que suas interações variem independentemente.
+- Define um objeto que encapsule a forma com a qual um conjunto de objetos interagem. O padrão Mediator promove o acoplamento fraco evitando que objetos referenciem uns aos outros explicitamente e permite que suas interações variem independentemente.
 
-<em><b>Memento</b></em>
+> Memento
 
-Sem violar o princípio de encapsulamento, captura e externaliza o estado interno de um objeto de forma a poder restaurar o objeto a este estado mais tarde.
+- Sem violar o princípio de encapsulamento, captura e externaliza o estado interno de um objeto de forma a poder restaurar o objeto a este estado mais tarde.
 
-<em><b>Observer</b></em>
+> Observer
 
-Define uma dependência um-para-muitos entre objetos de forma a avisar e atualizar vários objetos quando o estado de um objeto muda.
+- Define uma dependência um-para-muitos entre objetos de forma a avisar e atualizar vários objetos quando o estado de um objeto muda.
 
-<em><b>State</b></em>
+> State
 
-Permite que um objeto altere seu comportamento quando seu estado interno muda. O objeto estará aparentemente mudando de classe com a mudança de estado.
+- Permite que um objeto altere seu comportamento quando seu estado interno muda. O objeto estará aparentemente mudando de classe com a mudança de estado.
 
-<em><b>Strategy</b></em>
+> Strategy
 
-Define uma família de algoritmos, encapsula cada um, e deixe-os intercambiáveis. O padrão Strategy permite que o algoritmo varie independentemente dos clientes que o usam.
+- Define uma família de algoritmos, encapsula cada um, e deixe-os intercambiáveis. O padrão Strategy permite que o algoritmo varie independentemente dos clientes que o usam.
 
-<em><b>Template Method</b></em>
+> Template Method
 
-Define o esqueleto de um algoritmo numa operação, deixando que subclasses completem algumas das etapas. O padrão Template Method permite que subclasses redefinem determinadas etapas de um algoritmo sem alterar a estrutura do algoritmo.
+- Define o esqueleto de um algoritmo numa operação, deixando que subclasses completem algumas das etapas. O padrão Template Method permite que subclasses redefinem determinadas etapas de um algoritmo sem alterar a estrutura do algoritmo.
 
-<em><b>Visitor</b></em>
+> Visitor
 
-Represente uma operação a ser realizada nos elementos de uma estrutura de objetos. O padrão Visitor permite que se defina uma nova operação sem alterar as classes dos elementos nos quais a operação age.
+- Represente uma operação a ser realizada nos elementos de uma estrutura de objetos. O padrão Visitor permite que se defina uma nova operação sem alterar as classes dos elementos nos quais a operação age.
