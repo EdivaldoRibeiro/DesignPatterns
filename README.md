@@ -197,7 +197,18 @@ public class ConcretePrototype2 extends Prototype {
 > Singleton
 
 - Garante que uma classe tenha uma única instância e provê um ponto global de acesso à instância.
+```
+public final class Singleton {
 
+    private static final Singleton INSTANCE = new Singleton();
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        return INSTANCE;
+    }
+}
+```
 ### Padrões Estruturais:
 
 > Adapter
