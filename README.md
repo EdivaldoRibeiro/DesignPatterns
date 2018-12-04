@@ -7,6 +7,45 @@ Meu aprendizado no uso de `Design Patterns`.
    
 - Provê uma interface para criar famílias de objetos relacionados ou inter-dependentes sem especificar suas classes concretas.
 
+```
+public interface IButton {
+	void paint();
+}
+
+public interface IGUIFactory {
+	public IButton createButton();
+}
+
+public class WinFactory implements IGUIFactory {
+	@Override
+	public IButton createButton() {
+		return new WinButton();
+	}
+}
+
+public class OSXFactory implements IGUIFactory {
+	@Override
+	public IButton createButton() {
+		return new OSXButton();
+	}
+}
+
+public class WinButton implements IButton {
+	@Override
+	public void paint() {
+		System.out.println("WinButton");
+	}
+}
+
+public class OSXButton implements IButton {
+	@Override
+	public void paint() {
+		System.out.println("OSXButton");
+	}
+}
+
+```
+
 > Builder
 
 - Separa a construção de um objeto complexo da sua representação de forma que o mesmo processo de construção possa criar representações diferentes.
