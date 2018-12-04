@@ -6,7 +6,6 @@ Meu aprendizado no uso de `Design Patterns`.
 > Abstract Factory
    
 - Provê uma interface para criar famílias de objetos relacionados ou inter-dependentes sem especificar suas classes concretas.
-
 ```
 public interface IButton {
 	void paint();
@@ -43,13 +42,10 @@ public class OSXButton implements IButton {
 		System.out.println("OSXButton");
 	}
 }
-
 ```
-
 > Builder
 
 - Separa a construção de um objeto complexo da sua representação de forma que o mesmo processo de construção possa criar representações diferentes.
-
 ```
 abstract class ConversorTexto {
  	public void converterCaractere(char c) {
@@ -125,7 +121,6 @@ abstract class ConversorTexto {
  	}
  }
 ```
-
 > Factory Method
     
 - Define uma interface para criar um objeto, mas deixa as subclasses decidirem qual classe instanciar. O padrão Factory Method deixa uma classe repassar a responsabilidade de instanciação para subclasses.
@@ -174,11 +169,31 @@ public class OrdinaryMazeGame extends MazeGame {
 MazeGame ordinaryGame = new OrdinaryMazeGame();
 MazeGame magicGame = new MagicMazeGame();
 ```
-
 > Prototype
     
 - Especifica os tipos de objetos a criar usando uma instância-protótipo e cria novos objetos copiando este protótipo.
+```
+// Prototype pattern
+public abstract class Prototype implements Cloneable {
+    public Prototype clone() throws CloneNotSupportedException{
+        return (Prototype) super.clone();
+    }
+}
+	
+public class ConcretePrototype1 extends Prototype {
+    @Override
+    public Prototype clone() throws CloneNotSupportedException {
+        return (ConcretePrototype1)super.clone();
+    }
+}
 
+public class ConcretePrototype2 extends Prototype {
+    @Override
+    public Prototype clone() throws CloneNotSupportedException {
+        return (ConcretePrototype2)super.clone();
+    }
+}
+```
 > Singleton
 
 - Garante que uma classe tenha uma única instância e provê um ponto global de acesso à instância.
