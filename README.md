@@ -50,6 +50,82 @@ public class OSXButton implements IButton {
 
 - Separa a construção de um objeto complexo da sua representação de forma que o mesmo processo de construção possa criar representações diferentes.
 
+```
+abstract class ConversorTexto {
+ 	public void converterCaractere(char c) {
+ 		// vazio
+ 	}
+
+ 	public void converterParagrafo() {
+ 		// vazio
+ 	}
+
+ 	public void converterFonte(Fonte f) {
+ 		// vazio
+ 	}
+ }
+
+ class ConversorPDF extends ConversorTexto {
+ 	public void converterCaractere(char c) {
+ 		System.out.print("Caractere PDF");
+ 	}
+
+ 	public void converterParagrafo() {
+ 		System.out.print("Parágrafo PDF");
+ 	}
+
+ 	public void converterFonte(Fonte f) {
+ 		System.out.print("Fonte PDF");
+ 	}
+ }
+
+ class ConversorTeX extends ConversorTexto {
+ 	public void converterCaractere(char c) {
+ 		System.out.print("Caractere Tex");
+ 	}
+
+ 	public void converterParagrafo() {
+ 		System.out.print("Paragrafo Tex");
+ 	}
+
+ 	public void converterFonte(Fonte f) {
+ 		System.out.print("Fonte Tex");
+ 	}
+ }
+
+ class ConversorASCII extends ConversorTexto {
+ 	public void converterCaractere(char c) {
+ 		System.out.print("Caractere ASCII");
+ 	}
+ }
+
+ class LeitorRTF {
+
+ 	private ConversorTexto conversor;
+
+ 	LeitorRTF(ConversorTexto c) {
+ 		this.conversor = c;
+ 	}
+
+ 	public void lerRTF() {
+
+ 		List<Token> tokens = obterTokensDoTexto();
+
+ 		for (Token t : tokens) {
+ 			if (t.getTipo() == Token.Tipo.CARACTERE) {
+ 				conversor.converterCaractere(t.getCaractere());
+ 			}
+ 			if (t.getTipo() == Token.Tipo.PARAGRAFO) {
+ 				conversor.converterParagrafo();
+ 			}
+ 			if (t.getTipo() == Token.Tipo.FONTE) {
+ 				conversor.converterFonte(t.getFonte());
+ 			}
+ 		}
+ 	}
+ }
+```
+
 > Factory Method
     
 - Define uma interface para criar um objeto, mas deixa as subclasses decidirem qual classe instanciar. O padrão Factory Method deixa uma classe repassar a responsabilidade de instanciação para subclasses.
