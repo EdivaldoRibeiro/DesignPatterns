@@ -1,7 +1,7 @@
 # DesignPatterns
-Meu aprendizado no uso de "Design Patterns"
+Meu aprendizado no uso de "Design Patterns".
 
-Padrões de Criação
+Padrões de Criação:
 =
 
 <b>Abstract Factory</b>
@@ -24,7 +24,7 @@ Especifica os tipos de objetos a criar usando uma instância-protótipo e cria n
 
 Garante que uma classe tenha uma única instância e provê um ponto global de acesso à instância.
 
-Padrões Estruturais
+Padrões Estruturais:
 =
 
 <b>Adapter</b>
