@@ -1,5 +1,5 @@
 # DesignPatterns
-Meu aprendizado no uso de "Design Patterns".
+Meu aprendizado no uso de `Design Patterns`.
 
 ### Padrões de Criação:
 
