@@ -6,12 +6,12 @@ Padrões de Criação:
 Abstract Factory:
 =================
     
-    Provê uma interface para criar famílias de objetos relacionados ou inter-dependentes sem especificar suas classes concretas.
+Provê uma interface para criar famílias de objetos relacionados ou inter-dependentes sem especificar suas classes concretas.
 
 Builder:
 ========
 
-    Separa a construção de um objeto complexo da sua representação de forma que o mesmo processo de construção possa criar representações diferentes.
+Separa a construção de um objeto complexo da sua representação de forma que o mesmo processo de construção possa criar representações diferentes.
 
 Factory Method: 
 ===============
