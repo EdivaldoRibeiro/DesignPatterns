@@ -10,32 +10,37 @@ Meu aprendizado no uso de `Design Patterns`.
 public interface IButton {
 	void paint();
 }
-
+```
+```
 public interface IGUIFactory {
 	public IButton createButton();
 }
-
+```
+```
 public class WinFactory implements IGUIFactory {
 	@Override
 	public IButton createButton() {
 		return new WinButton();
 	}
 }
-
+```
+```
 public class OSXFactory implements IGUIFactory {
 	@Override
 	public IButton createButton() {
 		return new OSXButton();
 	}
 }
-
+```
+```
 public class WinButton implements IButton {
 	@Override
 	public void paint() {
 		System.out.println("WinButton");
 	}
 }
-
+```
+```
 public class OSXButton implements IButton {
 	@Override
 	public void paint() {
@@ -60,7 +65,8 @@ abstract class ConversorTexto {
  		// vazio
  	}
  }
-
+```
+```
  class ConversorPDF extends ConversorTexto {
  	public void converterCaractere(char c) {
  		System.out.print("Caractere PDF");
@@ -74,7 +80,8 @@ abstract class ConversorTexto {
  		System.out.print("Fonte PDF");
  	}
  }
-
+```
+```
  class ConversorTeX extends ConversorTexto {
  	public void converterCaractere(char c) {
  		System.out.print("Caractere Tex");
@@ -88,13 +95,15 @@ abstract class ConversorTexto {
  		System.out.print("Fonte Tex");
  	}
  }
-
+```
+```
  class ConversorASCII extends ConversorTexto {
  	public void converterCaractere(char c) {
  		System.out.print("Caractere ASCII");
  	}
  }
-
+```
+```
  class LeitorRTF {
 
  	private ConversorTexto conversor;
@@ -129,15 +138,18 @@ abstract class ConversorTexto {
 public abstract class Room {
    abstract void connect(Room room);
 }
-
+```
+```
 public class MagicRoom extends Room {
    public void connect(Room room) {}
 }
-
+```
+```
 public class OrdinaryRoom extends Room {
    public void connect(Room room) {}
 }
-
+```
+```
 public abstract class MazeGame {
     private final List<Room> rooms = new ArrayList<>();
 
@@ -151,21 +163,24 @@ public abstract class MazeGame {
 
     abstract protected Room makeRoom();
 }
-
+```
+```
 public class MagicMazeGame extends MazeGame {
     @Override
     protected Room makeRoom() {
         return new MagicRoom(); 
     }
 }
-
+```
+```
 public class OrdinaryMazeGame extends MazeGame {
     @Override
     protected Room makeRoom() {
         return new OrdinaryRoom(); 
     }
 }
-
+```
+```
 MazeGame ordinaryGame = new OrdinaryMazeGame();
 MazeGame magicGame = new MagicMazeGame();
 ```
@@ -179,14 +194,16 @@ public abstract class Prototype implements Cloneable {
         return (Prototype) super.clone();
     }
 }
-	
+```
+```	
 public class ConcretePrototype1 extends Prototype {
     @Override
     public Prototype clone() throws CloneNotSupportedException {
         return (ConcretePrototype1)super.clone();
     }
 }
-
+```
+```
 public class ConcretePrototype2 extends Prototype {
     @Override
     public Prototype clone() throws CloneNotSupportedException {
@@ -223,7 +240,8 @@ class EntradaPS2 {
         System.out.println("Conectado na entrada PS2");
     }
 }
-
+```
+```
 //Classe alvo(Target)
 class EntradaUSB {
 
@@ -232,7 +250,8 @@ class EntradaUSB {
         System.out.println("Conectado na entrada USB");
     }
 }
-
+```
+```
 //Classe adaptador(Adapter)
 class AdapterEntrada extends EntradaUSB {
 
@@ -247,7 +266,8 @@ class AdapterEntrada extends EntradaUSB {
         entradaPS2.conectarEntradaPS2();
     }
 }
-
+```
+```
 //Classe Cliente(Client)
 public class Teclado {
 
@@ -266,21 +286,24 @@ public class Teclado {
 interface DrawingAPI {
     public void drawCircle(final double x, final double y, final double radius);
 }
-
+```
+```
 /** "ConcreteImplementor"  1/2 */
 class DrawingAPI1 implements DrawingAPI {
     public void drawCircle(final double x, final double y, final double radius) {
         System.out.printf("API1.circle at %f:%f radius %f%n", x, y, radius);
     }
 }
-
+```
+```
 /** "ConcreteImplementor" 2/2 */
 class DrawingAPI2 implements DrawingAPI {
     public void drawCircle(final double x, final double y, final double radius) {
         System.out.printf("API2.circle at %f:%f radius %f%n", x, y, radius);
     }
 }
-
+```
+```
 /** "Abstraction" */
 abstract class Shape {
     protected DrawingAPI drawingAPI;
@@ -292,7 +315,8 @@ abstract class Shape {
     public abstract void draw();                                 // low-level
     public abstract void resizeByPercentage(final double pct);   // high-level
 }
-
+```
+```
 /** "Refined Abstraction" */
 class CircleShape extends Shape {
     private double x, y, radius;
@@ -310,7 +334,8 @@ class CircleShape extends Shape {
         radius *= (1.0 + pct/100.0);
     }
 }
-
+```
+```
 /** "Client" */
 class BridgePattern {
     public static void main(final String[] args) {
@@ -336,7 +361,8 @@ interface Graphic {
     //Printa o grafico.
     public void print();
 }
-
+```
+```
 /** "Composite" */
 import java.util.List;
 import java.util.ArrayList;
@@ -361,7 +387,8 @@ class CompositeGraphic implements Graphic {
         childGraphics.remove(graphic);
     }
 }
-
+```
+```
 /** "Leaf" */
 class Ellipse implements Graphic {
 
@@ -370,7 +397,8 @@ class Ellipse implements Graphic {
         System.out.println("Ellipse");
     }
 }
-
+```
+```
 /** Client */
 public class Program {
 
@@ -409,7 +437,8 @@ public interface Arma{
   public void montar();
 
 }
-
+```
+```
 public class ArmaBase implements Arma{
 
   @Override
@@ -418,7 +447,8 @@ public class ArmaBase implements Arma{
   }
 
 }
-
+```
+```
 public class ArmaDecorator implements Arma{
 
   public Arma arma;
@@ -433,7 +463,8 @@ public class ArmaDecorator implements Arma{
   }
 
 }
-
+```
+```
 public class Mira extends ArmaDecorator{
 
   public Mira(Arma arma){
@@ -447,7 +478,8 @@ public class Mira extends ArmaDecorator{
   }
 
 }
-
+```
+```
 public class Silenciador extends ArmaDecorator{
 
   public Silenciador(Arma arma){
@@ -461,19 +493,23 @@ public class Silenciador extends ArmaDecorator{
   }
 
 }
-
+```
+```
 /* Monta uma arma com mira e silenciador */
 Arma armaCompleta = new Silenciador( new Mira( new ArmaBase() ) );
 armaCompleta->montar();
-
+```
+```
 /* Monta uma arma sem acessórios */
 Arma armaB = new ArmaBase();
 armaB->montar();
-
+```
+```
 /* Monta uma arma com silenciador */
 Arma armaComSilenciador = new Silenciador( armaB );
 armaComSilenciador->montar();
-
+```
+```
 /* Monta uma arma com mira */
 Arma armaComMira = new Mira( armaB );
 armaComMira->montar();
@@ -489,15 +525,18 @@ class CPU {
     public void jump(long position) { ... }
     public void execute() { ... }
 }
-
+```
+```
 class HardDrive {
     public byte[] read(long lba, int size) { ... }
 }
-
+```
+```
 class Memory {
     public void load(long position, byte[] data) { ... }
 }
-
+```
+```
 /* Facade */
 
 class ComputerFacade {
@@ -518,7 +557,8 @@ class ComputerFacade {
         processor.execute();
     }
 }
-
+```
+```
 /* Client */
 
 class You {
@@ -542,21 +582,25 @@ interface BMWCarCustomisation {
 	// a lot of customisation attributes can be in there for a BMW car
 	void printCustomisations();
 }
-
+```
+```
 interface BMWCar {
 	double calculatePrice(BMWCarCustomisation custom);
 	void printFullCharacteristics(BMWCarCustomisation custom);
 }
-
+```
+```
 interface BMWCarFactory {
 	BMWCar createCar();
 }
-
+```
+```
 interface BMWCarFlyWeightFactory {
 	enum Model {Serie1, Serie2, Serie3};
 	BMWCar getBMWModel(Model m);
 }
-
+```
+```
 class BMWSerie1 implements BMWCar {
 	private final static double BASE_PRICE = 25000;
 
@@ -592,7 +636,8 @@ class BMWSerie1 implements BMWCar {
 		return sum;
 	}
 }
-
+```
+```
 class BMWSerie2 implements BMWCar {
 	private final static double BASE_PRICE = 28000;
 
@@ -626,21 +671,24 @@ class BMWSerie2 implements BMWCar {
 		return sum;
 	}
 }
-
+```
+```
 class BMWSerie2Factory implements BMWCarFactory {
 	@Override
 	public BMWCar createCar() {
 		return new BMWSerie2();
 	}
 }
-
+```
+```
 class BMWSerie1Factory implements BMWCarFactory {
 	@Override
 	public BMWCar createCar() {
 		return new BMWSerie1();
 	}
 }
-
+```
+```
 class BMWSerieFlyWeightFactory implements BMWCarFlyWeightFactory {
 	private Map<Model, BMWCar> cache = new HashMap<>();
 
@@ -666,7 +714,8 @@ class BMWSerieFlyWeightFactory implements BMWCarFlyWeightFactory {
 		return cache.get(m);
 	}
 }
-
+```
+```
 class BMWSerieCarCustomisation implements BMWCarCustomisation {
 
 	private int tireSize;
@@ -692,7 +741,8 @@ class BMWSerieCarCustomisation implements BMWCarCustomisation {
 		System.out.println("LaserSignature Size:" + getLaserSignature().length());
 	}
 }
-
+```
+```
 public class MainTest {
 
 	public static void main(String[] args) {
@@ -734,7 +784,8 @@ public class MainTest {
 interface Image {
     public void displayImage();
 }
-
+```
+```
 // On System A
 class RealImage implements Image {
 
@@ -763,7 +814,8 @@ class RealImage implements Image {
     }
 
 }
-
+```
+```
 // On System B
 class ProxyImage implements Image {
 
@@ -788,7 +840,8 @@ class ProxyImage implements Image {
     }
 
 }
-
+```
+```
 class ProxyExample {
 
    /**
@@ -831,7 +884,8 @@ abstract class PurchasePower {
         }
     }
 }
-
+```
+```
 class ManagerPPower extends PurchasePower {
     
     protected double getAllowable() {
@@ -842,7 +896,8 @@ class ManagerPPower extends PurchasePower {
         return "Manager";
     }
 }
-
+```
+```
 class DirectorPPower extends PurchasePower {
     
     protected double getAllowable() {
@@ -853,7 +908,8 @@ class DirectorPPower extends PurchasePower {
         return "Director";
     }
 }
-
+```
+```
 class VicePresidentPPower extends PurchasePower {
     
     protected double getAllowable() {
@@ -864,7 +920,8 @@ class VicePresidentPPower extends PurchasePower {
         return "Vice President";
     }
 }
-
+```
+```
 class PresidentPPower extends PurchasePower {
 
     protected double getAllowable() {
@@ -875,7 +932,8 @@ class PresidentPPower extends PurchasePower {
         return "President";
     }
 }
-
+```
+```
 class PurchaseRequest {
 
     private double amount;
@@ -901,7 +959,8 @@ class PurchaseRequest {
         this.purpose = purpose;
     }
 }
-
+```
+```
 class CheckAuthority {
 
     public static void main(String[] args) {
@@ -939,7 +998,8 @@ import java.util.ArrayList;
 public interface Command {
    void execute();
 }
-
+```
+```
 /** The Invoker class */
 public class Switch {
    private List<Command> history = new ArrayList<Command>();
@@ -949,7 +1009,8 @@ public class Switch {
       cmd.execute();
    }
 }
-
+```
+```
 /** The Receiver class */
 public class Light {
 
@@ -961,7 +1022,8 @@ public class Light {
       System.out.println("The light is off");
    }
 }
-
+```
+```
 /** The Command for turning on the light - ConcreteCommand #1 */
 public class FlipUpCommand implements Command {
    private Light theLight;
@@ -975,7 +1037,8 @@ public class FlipUpCommand implements Command {
       theLight.turnOn();
    }
 }
-
+```
+```
 /** The Command for turning off the light - ConcreteCommand #2 */
 public class FlipDownCommand implements Command {
    private Light theLight;
@@ -989,7 +1052,8 @@ public class FlipDownCommand implements Command {
       theLight.turnOff();
    }
 }
-
+```
+```
 /* The test class or client */
 public class PressSwitch {
    public static void main(final String[] arguments){
@@ -1029,13 +1093,15 @@ import java.util.Map;
 interface Expression {
     public int interpret(final Map<String, Expression> variables);
 }
-
+```
+```
 class Number implements Expression {
     private int number;
     public Number(final int number)       { this.number = number; }
     public int interpret(final Map<String, Expression> variables)  { return number; }
 }
-
+```
+```
 class Plus implements Expression {
     Expression leftOperand;
     Expression rightOperand;
@@ -1048,7 +1114,8 @@ class Plus implements Expression {
         return leftOperand.interpret(variables) + rightOperand.interpret(variables);
     }
 }
-
+```
+```
 class Minus implements Expression {
     Expression leftOperand;
     Expression rightOperand;
@@ -1061,7 +1128,8 @@ class Minus implements Expression {
         return leftOperand.interpret(variables) - rightOperand.interpret(variables);
     }
 }
-
+```
+```
 class Variable implements Expression {
     private String name;
     public Variable(final String name)       { this.name = name; }
@@ -1070,7 +1138,8 @@ class Variable implements Expression {
         return variables.get(name).interpret(variables);
     }
 }
-
+```
+```
 import java.util.Map;
 import java.util.Stack;
 
@@ -1100,7 +1169,8 @@ class Evaluator implements Expression {
         return syntaxTree.interpret(context);
     }
 }
-
+```
+```
 import java.util.Map;
 import java.util.HashMap;
 
@@ -1136,7 +1206,8 @@ class RedHead implements Iterable<RedHead> {
         return redHeads.iterator();
     }
 }
-
+```
+```
 class Weasley extends RedHead {
     private String name;
     
@@ -1147,7 +1218,8 @@ class Weasley extends RedHead {
         return this.name + " Weasley";
     }
 }
-
+```
+```
 public static IteratorExample {
     public static void main(String[] args) {
         RedHead redHead = new RedHead();
@@ -1185,7 +1257,8 @@ import javax.swing.JPanel;
 interface Command {
     void execute();
 }
-
+```
+```
 //Abstract Mediator
 interface Mediator {
     void book();
@@ -1196,7 +1269,8 @@ interface Mediator {
     void registerBook(BtnBook b);
     void registerDisplay(LblDisplay d);
 }
-
+```
+```
 //Concrete mediator
 class ParticipantMediator implements Mediator {
 
@@ -1244,7 +1318,8 @@ class ParticipantMediator implements Mediator {
     }
     
 }
-
+```
+```
 //A concrete colleague
 class BtnView extends JButton implements Command {
 
@@ -1262,7 +1337,8 @@ class BtnView extends JButton implements Command {
     }
     
 }
-
+```
+```
 //A concrete colleague
 class BtnSearch extends JButton implements Command {
 
@@ -1280,7 +1356,8 @@ class BtnSearch extends JButton implements Command {
     }
     
 }
-
+```
+```
 //A concrete colleague
 class BtnBook extends JButton implements Command {
 
@@ -1298,7 +1375,8 @@ class BtnBook extends JButton implements Command {
     }
 
 }
-
+```
+```
 class LblDisplay extends JLabel {
 
     Mediator med;
@@ -1311,7 +1389,8 @@ class LblDisplay extends JLabel {
     }
 
 }
-
+```
+```
 class MediatorDemo extends JFrame implements ActionListener {
 
     Mediator med = new ParticipantMediator();
@@ -1377,7 +1456,8 @@ class Originator {
         }
     }
 }
- 
+```
+```
 class Caretaker {
     public static void main(String[] args) {
         List<Originator.Memento> savedStates = new ArrayList<Originator.Memento>();
@@ -1436,7 +1516,8 @@ public class MyApp {
 interface Statelike {
     void writeName(StateContext context, String name);
 }
-
+```
+```
 class StateLowerCase implements Statelike {
     @Override
     public void writeName(final StateContext context, final String name) {
@@ -1444,7 +1525,8 @@ class StateLowerCase implements Statelike {
         context.setState(new StateMultipleUpperCase());
     }
 }
-
+```
+```
 class StateMultipleUpperCase implements Statelike {
     /** Counter local to this state */
     private int count = 0;
@@ -1595,8 +1677,6 @@ class HappyHourStrategy implements BillingStrategy {
 
 - Define o esqueleto de um algoritmo numa operação, deixando que subclasses completem algumas das etapas. O padrão Template Method permite que subclasses redefinem determinadas etapas de um algoritmo sem alterar a estrutura do algoritmo.
 ```
-package br.com.nc.architect.templatemethod;
-
 public abstract class AbstractClass {
 
 	public final void templateMethod() {
@@ -1611,8 +1691,6 @@ public abstract class AbstractClass {
 }
 ```
 ```
-package br.com.nc.architect.templatemethod;
-
 public class Concrete1 extends AbstractClass {
 
 	public void primitiveOperation1() {
@@ -1625,8 +1703,6 @@ public class Concrete1 extends AbstractClass {
 }
 ```
 ```
-package br.com.nc.architect.templatemethod;
-
 public class Concrete2 extends AbstractClass {
 
 	public void primitiveOperation1() {
@@ -1639,8 +1715,6 @@ public class Concrete2 extends AbstractClass {
 }
 ```
 ```
-package br.com.nc.architect.templatemethod;
-
 public class TestTemplateMethod {
 
 	public static void main(String[] args) {
