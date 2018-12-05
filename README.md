@@ -1498,11 +1498,287 @@ public class DemoOfClientState {
 > Strategy
 
 - Define uma família de algoritmos, encapsula cada um, e deixe-os intercambiáveis. O padrão Strategy permite que o algoritmo varie independentemente dos clientes que o usam.
+```
+import java.util.ArrayList;
+import java.util.List;
 
+public class StrategyPatternWiki {
+
+    public static void main(final String[] arguments) {
+        // Prepare strategies
+        BillingStrategy normalStrategy    = new NormalStrategy();
+        BillingStrategy happyHourStrategy = new HappyHourStrategy();
+
+        Customer firstCustomer = new Customer(normalStrategy);
+
+        // Normal billing
+        firstCustomer.add(1.0, 1);
+
+        // Start Happy Hour
+        firstCustomer.setStrategy(happyHourStrategy);
+        firstCustomer.add(1.0, 2);
+
+        // New Customer
+        Customer secondCustomer = new Customer(happyHourStrategy);
+        secondCustomer.add(0.8, 1);
+        // The Customer pays
+        firstCustomer.printBill();
+
+        // End Happy Hour
+        secondCustomer.setStrategy(normalStrategy);
+        secondCustomer.add(1.3, 2);
+        secondCustomer.add(2.5, 1);
+        secondCustomer.printBill();
+    }
+}
+```
+```
+class Customer {
+
+    private List<Double> drinks;
+    private BillingStrategy strategy;
+
+    public Customer(final BillingStrategy strategy) {
+        this.drinks = new ArrayList<Double>();
+        this.strategy = strategy;
+    }
+
+    public void add(final double price, final int quantity) {
+        drinks.add(strategy.getActPrice(price*quantity));
+    }
+
+    // Payment of bill
+    public void printBill() {
+        double sum = 0;
+        for (Double i : drinks) {
+            sum += i;
+        }
+        System.out.println("Total due: " + sum);
+        drinks.clear();
+    }
+
+    // Set Strategy
+    public void setStrategy(final BillingStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+}
+```
+```
+interface BillingStrategy {
+    double getActPrice(final double rawPrice);
+}
+```
+```
+// Normal billing strategy (unchanged price)
+class NormalStrategy implements BillingStrategy {
+
+    @Override
+    public double getActPrice(final double rawPrice) {
+        return rawPrice;
+    }
+
+}
+```
+```
+// Strategy for Happy hour (50% discount)
+class HappyHourStrategy implements BillingStrategy {
+
+    @Override
+    public double getActPrice(final double rawPrice) {
+        return rawPrice*0.5;
+    }
+
+}
+```
 > Template Method
 
 - Define o esqueleto de um algoritmo numa operação, deixando que subclasses completem algumas das etapas. O padrão Template Method permite que subclasses redefinem determinadas etapas de um algoritmo sem alterar a estrutura do algoritmo.
+```
+package br.com.nc.architect.templatemethod;
 
+public abstract class AbstractClass {
+
+	public final void templateMethod() {
+		System.out.println("AbstractClass.templateMethod() called");
+		primitiveOperation1();
+		primitiveOperation2();
+
+	}
+
+	public abstract void primitiveOperation1();
+	public abstract void primitiveOperation2();
+}
+```
+```
+package br.com.nc.architect.templatemethod;
+
+public class Concrete1 extends AbstractClass {
+
+	public void primitiveOperation1() {
+		System.out.println("Concrete1.primitiveOperation1() called");
+	}
+
+	public void primitiveOperation2() {
+		System.out.println("Concrete1.primitiveOperation2() called");
+	}
+}
+```
+```
+package br.com.nc.architect.templatemethod;
+
+public class Concrete2 extends AbstractClass {
+
+	public void primitiveOperation1() {
+		System.out.println("Concrete2.primitiveOperation1() called");
+	}
+
+	public void primitiveOperation2() {
+		System.out.println("Concrete2.primitiveOperation2() called");
+	}
+}
+```
+```
+package br.com.nc.architect.templatemethod;
+
+public class TestTemplateMethod {
+
+	public static void main(String[] args) {
+		System.out.println("Test TemplateMethod");
+		System.out.println("-------------------------");
+
+		AbstractClass class1 = new Concrete1();
+		AbstractClass class2 = new Concrete2();
+
+		class1.templateMethod();
+		class2.templateMethod();
+	}
+}
+```
 > Visitor
 
 - Represente uma operação a ser realizada nos elementos de uma estrutura de objetos. O padrão Visitor permite que se defina uma nova operação sem alterar as classes dos elementos nos quais a operação age.
+```
+interface CarElement {
+    void accept(CarElementVisitor visitor);
+}
+```
+```
+interface CarElementVisitor {
+    void visit(Body body);
+    void visit(Car car);
+    void visit(Engine engine);
+    void visit(Wheel wheel);
+}
+```
+```
+class Car implements CarElement {
+    CarElement[] elements;
+
+    public Car() {
+        this.elements = new CarElement[] {
+            new Wheel("front left"), new Wheel("front right"),
+            new Wheel("back left"), new Wheel("back right"),
+            new Body(), new Engine()
+        };
+    }
+
+    public void accept(final CarElementVisitor visitor) {
+        for (CarElement elem : elements) {
+            elem.accept(visitor);
+        }
+        visitor.visit(this);
+    }
+}
+```
+```
+class Body implements CarElement {
+    public void accept(final CarElementVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+```
+```
+class Engine implements CarElement {
+    public void accept(final CarElementVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+```
+```
+class Wheel implements CarElement {
+    private String name;
+
+    public Wheel(final String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void accept(final CarElementVisitor visitor) {
+        /*
+         * accept(CarElementVisitor) in Wheel implements
+         * accept(CarElementVisitor) in CarElement, so the call
+         * to accept is bound at run time. This can be considered
+         * the *first* dispatch. However, the decision to call
+         * visit(Wheel) (as opposed to visit(Engine) etc.) can be
+         * made during compile time since 'this' is known at compile
+         * time to be a Wheel. Moreover, each implementation of
+         * CarElementVisitor implements the visit(Wheel), which is
+         * another decision that is made at run time. This can be
+         * considered the *second* dispatch.
+         */
+        visitor.visit(this);
+    }
+}
+```
+```
+class CarElementDoVisitor implements CarElementVisitor {
+    public void visit(final Body body) {
+        System.out.println("Moving my body");
+    }
+
+    public void visit(final Car car) {
+        System.out.println("Starting my car");
+    }
+
+    public void visit(final Wheel wheel) {
+        System.out.println("Kicking my " + wheel.getName() + " wheel");
+    }
+
+    public void visit(final Engine engine) {
+        System.out.println("Starting my engine");
+    }
+}
+```
+```
+class CarElementPrintVisitor implements CarElementVisitor {
+    public void visit(final Body body) {
+        System.out.println("Visiting body");
+    }
+
+    public void visit(final Car car) {
+        System.out.println("Visiting car");
+    }
+
+    public void visit(final Engine engine) {
+        System.out.println("Visiting engine");
+    }
+
+    public void visit(final Wheel wheel) {
+        System.out.println("Visiting " + wheel.getName() + " wheel");
+    }
+}
+```
+```
+public class VisitorDemo {
+    public static void main(final String[] args) {
+        final Car car = new Car();
+
+        car.accept(new CarElementPrintVisitor());
+        car.accept(new CarElementDoVisitor());
+    }
+}
+```
