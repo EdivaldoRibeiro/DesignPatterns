@@ -214,11 +214,118 @@ public final class Singleton {
 > Adapter
 
 - Converte a interface de uma classe em outra interface com a qual os clientes estão prontos para lidar. O padrão Adapter permite que classes trabalhem conjuntamente apesar de interfaces incompatíveis.
+```
+//Classe adaptada(Adaptee)
+class EntradaPS2 {
 
+    //Solicitação Especifica
+    public void conectarEntradaPS2() {
+        System.out.println("Conectado na entrada PS2");
+    }
+}
+
+//Classe alvo(Target)
+class EntradaUSB {
+
+    //Solicitação
+    public void conectarEntradaUSB() {
+        System.out.println("Conectado na entrada USB");
+    }
+}
+
+//Classe adaptador(Adapter)
+class AdapterEntrada extends EntradaUSB {
+
+    private EntradaPS2 entradaPS2;
+
+    public AdapterEntrada(EntradaPS2 entradaPs2) {
+        this.entradaPS2 = entradaPs2;
+    }
+
+    //Solicitação
+    public void conectarEntradaUSB() {
+        entradaPS2.conectarEntradaPS2();
+    }
+}
+
+//Classe Cliente(Client)
+public class Teclado {
+
+    public static void main(String[] args) {
+        EntradaPS2 ps2 = new EntradaPS2();
+        AdapterEntrada adaptador = new AdapterEntrada(ps2);
+        adaptador.conectarEntradaUSB();
+    }
+}
+```
 > Bridge
 
 - Desacopla uma abstração de sua implementação de forma que as duas possam mudar independentemente uma da outra.
+```
+/** "Implementor" */
+interface DrawingAPI {
+    public void drawCircle(final double x, final double y, final double radius);
+}
 
+/** "ConcreteImplementor"  1/2 */
+class DrawingAPI1 implements DrawingAPI {
+    public void drawCircle(final double x, final double y, final double radius) {
+        System.out.printf("API1.circle at %f:%f radius %f%n", x, y, radius);
+    }
+}
+
+/** "ConcreteImplementor" 2/2 */
+class DrawingAPI2 implements DrawingAPI {
+    public void drawCircle(final double x, final double y, final double radius) {
+        System.out.printf("API2.circle at %f:%f radius %f%n", x, y, radius);
+    }
+}
+
+/** "Abstraction" */
+abstract class Shape {
+    protected DrawingAPI drawingAPI;
+
+    protected Shape(final DrawingAPI drawingAPI){
+        this.drawingAPI = drawingAPI;
+    }
+
+    public abstract void draw();                                 // low-level
+    public abstract void resizeByPercentage(final double pct);   // high-level
+}
+
+/** "Refined Abstraction" */
+class CircleShape extends Shape {
+    private double x, y, radius;
+    public CircleShape(final double x, final double y, final double radius, final DrawingAPI drawingAPI) {
+        super(drawingAPI);
+        this.x = x;  this.y = y;  this.radius = radius;
+    }
+
+    // low-level i.e. Implementation specific
+    public void draw() {
+        drawingAPI.drawCircle(x, y, radius);
+    }
+    // high-level i.e. Abstraction specific
+    public void resizeByPercentage(final double pct) {
+        radius *= (1.0 + pct/100.0);
+    }
+}
+
+/** "Client" */
+class BridgePattern {
+    public static void main(final String[] args) {
+        Shape[] shapes = new Shape[] {
+            new CircleShape(1, 2, 3, new DrawingAPI1()),
+            new CircleShape(5, 7, 11, new DrawingAPI2())
+        };
+
+        for (Shape shape : shapes) {
+            shape.resizeByPercentage(2.5);
+            shape.draw();
+        }
+    }
+}
+```
 > Composite
 
 - Compõe objetos em estruturas de árvore para representar hierarquias Parte-Todo. O padrão Composite permite que clientes tratem objetos individuais e composições de objetos de uniformemente.
