@@ -730,25 +730,444 @@ public class MainTest {
 > Proxy
 
 - Provê um objeto procurador ou placeholder para um outro objeto para controlar o acesso a ele.
+```
+interface Image {
+    public void displayImage();
+}
 
+// On System A
+class RealImage implements Image {
+
+    private String filename = null;
+    /**
+     * Constructor
+     * @param filename
+     */
+    public RealImage(final String filename) {
+        this.filename = filename;
+        loadImageFromDisk();
+    }
+
+    /**
+     * Loads the image from the disk
+     */
+    private void loadImageFromDisk() {
+        System.out.println("Loading   " + filename);
+    }
+
+    /**
+     * Displays the image
+     */
+    public void displayImage() {
+        System.out.println("Displaying " + filename);
+    }
+
+}
+
+// On System B
+class ProxyImage implements Image {
+
+    private RealImage image = null;
+    private String filename = null;
+    /**
+     * Constructor
+     * @param filename
+     */
+    public ProxyImage(final String filename) {
+        this.filename = filename;
+    }
+
+    /**
+     * Displays the image
+     */
+    public void displayImage() {
+        if (image == null) {
+           image = new RealImage(filename);
+        }
+        image.displayImage();
+    }
+
+}
+
+class ProxyExample {
+
+   /**
+    * Test method
+    */
+   public static void main(final String[] arguments) {
+        final Image image1 = new ProxyImage("HiRes_10MB_Photo1");
+        final Image image2 = new ProxyImage("HiRes_10MB_Photo2");
+
+        image1.displayImage(); // loading necessary
+        image1.displayImage(); // loading unnecessary
+        image2.displayImage(); // loading necessary
+        image2.displayImage(); // loading unnecessary
+        image1.displayImage(); // loading unnecessary
+    }
+}
+```
 ### Padrões Comportamentais:
 
 > Chain of Responsibility
 
 - Evita acoplar o enviador de um pedido ao receptor dando oportunidade a vários objetos para tratarem do pedido. Os objetos receptores são encadeados e o pedido é passado na cadeia até que um objeto o trate.
+```
+abstract class PurchasePower {
+    protected static final double BASE = 500;
+    protected PurchasePower successor;
 
+    abstract protected double getAllowable();
+    abstract protected String getRole();
+
+    public void setSuccessor(PurchasePower successor) {
+        this.successor = successor;
+    }
+
+    public void processRequest(PurchaseRequest request) {
+        if (request.getAmount() < this.getAllowable()) {
+            System.out.println(this.getRole() + " will approve $" + request.getAmount());
+        } else if (successor != null) {
+            successor.processRequest(request);
+        }
+    }
+}
+
+class ManagerPPower extends PurchasePower {
+    
+    protected double getAllowable() {
+        return BASE * 10;
+    }
+
+    protected String getRole() {
+        return "Manager";
+    }
+}
+
+class DirectorPPower extends PurchasePower {
+    
+    protected double getAllowable() {
+        return BASE * 20;
+    }
+
+    protected String getRole() {
+        return "Director";
+    }
+}
+
+class VicePresidentPPower extends PurchasePower {
+    
+    protected double getAllowable() {
+        return BASE * 40;
+    }
+
+    protected String getRole() {
+        return "Vice President";
+    }
+}
+
+class PresidentPPower extends PurchasePower {
+
+    protected double getAllowable() {
+        return BASE * 60;
+    }
+
+    protected String getRole() {
+        return "President";
+    }
+}
+
+class PurchaseRequest {
+
+    private double amount;
+    private String purpose;
+
+    public PurchaseRequest(double amount, String purpose) {
+        this.amount = amount;
+        this.purpose = purpose;
+    }
+
+    public double getAmount() {
+        return this.amount;
+    }
+
+    public void setAmount(double amount)  {
+        this.amount = amount;
+    }
+
+    public String getPurpose() {
+        return this.purpose;
+    }
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+}
+
+class CheckAuthority {
+
+    public static void main(String[] args) {
+        ManagerPPower manager = new ManagerPPower();
+        DirectorPPower director = new DirectorPPower();
+        VicePresidentPPower vp = new VicePresidentPPower();
+        PresidentPPower president = new PresidentPPower();
+        manager.setSuccessor(director);
+        director.setSuccessor(vp);
+        vp.setSuccessor(president);
+
+        // Press Ctrl+C to end.
+        try {
+            while (true) {
+                System.out.println("Enter the amount to check who should approve your expenditure.");
+                System.out.print(">");
+                double d = Double.parseDouble(new BufferedReader(new InputStreamReader(System.in)).readLine());
+                manager.processRequest(new PurchaseRequest(d, "General"));
+            }
+        }
+        catch (Exception exc) {
+            System.exit(1);
+        }
+    }
+}
+```
 > Command
 
 - Encapsula um pedido em um objeto, permitindo assim parametrizar clientes com pedidos diferentes, enfileirar pedidos, fazer log de pedidos, e dar suporte a operações de undo.
+```
+import java.util.List;
+import java.util.ArrayList;
 
+/** The Command interface */
+public interface Command {
+   void execute();
+}
+
+/** The Invoker class */
+public class Switch {
+   private List<Command> history = new ArrayList<Command>();
+
+   public void storeAndExecute(final Command cmd) {
+      this.history.add(cmd); // optional
+      cmd.execute();
+   }
+}
+
+/** The Receiver class */
+public class Light {
+
+   public void turnOn() {
+      System.out.println("The light is on");
+   }
+
+   public void turnOff() {
+      System.out.println("The light is off");
+   }
+}
+
+/** The Command for turning on the light - ConcreteCommand #1 */
+public class FlipUpCommand implements Command {
+   private Light theLight;
+
+   public FlipUpCommand(final Light light) {
+      this.theLight = light;
+   }
+
+   @Override    // Command
+   public void execute() {
+      theLight.turnOn();
+   }
+}
+
+/** The Command for turning off the light - ConcreteCommand #2 */
+public class FlipDownCommand implements Command {
+   private Light theLight;
+
+   public FlipDownCommand(final Light light) {
+      this.theLight = light;
+   }
+
+   @Override    // Command
+   public void execute() {
+      theLight.turnOff();
+   }
+}
+
+/* The test class or client */
+public class PressSwitch {
+   public static void main(final String[] arguments){
+      // Check number of arguments
+      if (arguments.length != 1) {
+         System.err.println("Argument \"ON\" or \"OFF\" is required!");
+         System.exit(-1);
+      }
+
+      final Light lamp = new Light();
+	  
+      final Command switchUp = new FlipUpCommand(lamp);
+      final Command switchDown = new FlipDownCommand(lamp);
+
+      final Switch mySwitch = new Switch();
+
+      switch(arguments[0]) {
+         case "ON":
+            mySwitch.storeAndExecute(switchUp);
+            break;
+         case "OFF":
+            mySwitch.storeAndExecute(switchDown);
+            break;
+         default:
+            System.err.println("Argument \"ON\" or \"OFF\" is required.");
+            System.exit(-1);
+      }
+   }
+}
+```
 > Interpreter
 
 - Dada uma linguagem, define uma representação de sua gramática e um interpretador que usa a representação da gramática para interpretar sentenças da linguagem.
+```
+import java.util.Map;
 
+interface Expression {
+    public int interpret(final Map<String, Expression> variables);
+}
+
+class Number implements Expression {
+    private int number;
+    public Number(final int number)       { this.number = number; }
+    public int interpret(final Map<String, Expression> variables)  { return number; }
+}
+
+class Plus implements Expression {
+    Expression leftOperand;
+    Expression rightOperand;
+    public Plus(final Expression left, final Expression right) {
+        leftOperand = left;
+        rightOperand = right;
+    }
+		
+    public int interpret(final Map<String, Expression> variables) {
+        return leftOperand.interpret(variables) + rightOperand.interpret(variables);
+    }
+}
+
+class Minus implements Expression {
+    Expression leftOperand;
+    Expression rightOperand;
+    public Minus(final Expression left, final Expression right) {
+        leftOperand = left;
+        rightOperand = right;
+    }
+		
+    public int interpret(final Map<String, Expression> variables) {
+        return leftOperand.interpret(variables) - rightOperand.interpret(variables);
+    }
+}
+
+class Variable implements Expression {
+    private String name;
+    public Variable(final String name)       { this.name = name; }
+    public int interpret(final Map<String, Expression> variables) {
+        if (null == variables.get(name)) return 0; // Either return new Number(0).
+        return variables.get(name).interpret(variables);
+    }
+}
+
+import java.util.Map;
+import java.util.Stack;
+
+class Evaluator implements Expression {
+    private Expression syntaxTree;
+
+    public Evaluator(final String expression) {
+        final Stack<Expression> expressionStack = new Stack<Expression>();
+        for (final String token : expression.split(" ")) {
+            if (token.equals("+")) {
+                final Expression subExpression = new Plus(expressionStack.pop(), expressionStack.pop());
+                expressionStack.push(subExpression);
+            } else if (token.equals("-")) {
+                // it's necessary to remove first the right operand from the stack
+                final Expression right = expressionStack.pop();
+                // ..and then the left one
+                final Expression left = expressionStack.pop();
+                final Expression subExpression = new Minus(left, right);
+                expressionStack.push(subExpression);
+            } else
+                expressionStack.push(new Variable(token));
+        }
+        syntaxTree = expressionStack.pop();
+    }
+
+    public int interpret(final Map<String, Expression> context) {
+        return syntaxTree.interpret(context);
+    }
+}
+
+import java.util.Map;
+import java.util.HashMap;
+
+public class InterpreterExample {
+    public static void main(final String[] args) {
+        final String expression = "w x z - +";
+        final Evaluator sentence = new Evaluator(expression);
+        final Map<String, Expression> variables = new HashMap<String, Expression>();
+        variables.put("w", new Number(5));
+        variables.put("x", new Number(10));
+        variables.put("z", new Number(42));
+        final int result = sentence.interpret(variables);
+        System.out.println(result);
+    }
+}
+```
 > Iterator
 
 - Provê uma forma de acessar os elementos de uma coleção de objetos seqüencialmente sem expor sua representação subjacente.
+```
+import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
 
+class RedHead implements Iterable<RedHead> {
+    private Set<RedHead> redHeads = new HashSet<RedHead>();
+    
+    public void add(final RedHead redHead) {
+        redHeads.add(redHead);
+    }
+    @Override
+    public Iterator<RedHead> iterator() {
+        return redHeads.iterator();
+    }
+}
+
+class Weasley extends RedHead {
+    private String name;
+    
+    public Weasley(final String name) {
+        this.name = name;
+    }
+    public String toString() {
+        return this.name + " Weasley";
+    }
+}
+
+public static IteratorExample {
+    public static void main(String[] args) {
+        RedHead redHead = new RedHead();
+        
+        redHead.add(new Weasley("Arthur"));
+        redHead.add(new Weasley("Molly"));
+        redHead.add(new Weasley("Bill"));
+        redHead.add(new Weasley("Charlie"));
+        redHead.add(new Weasley("Percy"));
+        redHead.add(new Weasley("Fred"));
+        redHead.add(new Weasley("George"));
+        redHead.add(new Weasley("Ron"));
+        redHead.add(new Weasley("Ginny"));
+        
+        for (ReadHead rh : redHead) {
+            System.out.println(rh);
+        }
+    }
+}
+```
 > Mediator
 
 - Define um objeto que encapsule a forma com a qual um conjunto de objetos interagem. O padrão Mediator promove o acoplamento fraco evitando que objetos referenciem uns aos outros explicitamente e permite que suas interações variem independentemente.
