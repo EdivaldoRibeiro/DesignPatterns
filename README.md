@@ -1171,19 +1171,330 @@ public static IteratorExample {
 > Mediator
 
 - Define um objeto que encapsule a forma com a qual um conjunto de objetos interagem. O padrão Mediator promove o acoplamento fraco evitando que objetos referenciem uns aos outros explicitamente e permite que suas interações variem independentemente.
+```
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+//Colleague interface
+interface Command {
+    void execute();
+}
+
+//Abstract Mediator
+interface Mediator {
+    void book();
+    void view();
+    void search();
+    void registerView(BtnView v);
+    void registerSearch(BtnSearch s);
+    void registerBook(BtnBook b);
+    void registerDisplay(LblDisplay d);
+}
+
+//Concrete mediator
+class ParticipantMediator implements Mediator {
+
+    BtnView btnView;
+    BtnSearch btnSearch;
+    BtnBook btnBook;
+    LblDisplay show;
+
+    //....
+    public void registerView(BtnView v) {
+        btnView = v;
+    }
+
+    public void registerSearch(BtnSearch s) {
+        btnSearch = s;
+    }
+
+    public void registerBook(BtnBook b) {
+        btnBook = b;
+    }
+
+    public void registerDisplay(LblDisplay d) {
+        show = d;
+    }
+
+    public void book() {
+        btnBook.setEnabled(false);
+        btnView.setEnabled(true);
+        btnSearch.setEnabled(true);
+        show.setText("booking...");
+    }
+
+    public void view() {
+        btnView.setEnabled(false);
+        btnSearch.setEnabled(true);
+        btnBook.setEnabled(true);
+        show.setText("viewing...");
+    }
+
+    public void search() {
+        btnSearch.setEnabled(false);
+        btnView.setEnabled(true);
+        btnBook.setEnabled(true);
+        show.setText("searching...");
+    }
+    
+}
+
+//A concrete colleague
+class BtnView extends JButton implements Command {
+
+    Mediator med;
+
+    BtnView(ActionListener al, Mediator m) {
+        super("View");
+        addActionListener(al);
+        med = m;
+        med.registerView(this);
+    }
+
+    public void execute() {
+        med.view();
+    }
+    
+}
+
+//A concrete colleague
+class BtnSearch extends JButton implements Command {
+
+    Mediator med;
+
+    BtnSearch(ActionListener al, Mediator m) {
+        super("Search");
+        addActionListener(al);
+        med = m;
+        med.registerSearch(this);
+    }
+
+    public void execute() {
+        med.search();
+    }
+    
+}
+
+//A concrete colleague
+class BtnBook extends JButton implements Command {
+
+    Mediator med;
+
+    BtnBook(ActionListener al, Mediator m) {
+        super("Book");
+        addActionListener(al);
+        med = m;
+        med.registerBook(this);
+    }
+
+    public void execute() {
+        med.book();
+    }
+
+}
+
+class LblDisplay extends JLabel {
+
+    Mediator med;
+
+    LblDisplay(Mediator m) {
+        super("Just start...");
+        med = m;
+        med.registerDisplay(this);
+        setFont(new Font("Arial", Font.BOLD, 24));
+    }
+
+}
+
+class MediatorDemo extends JFrame implements ActionListener {
+
+    Mediator med = new ParticipantMediator();
+
+    MediatorDemo() {
+        JPanel p = new JPanel();
+        p.add(new BtnView(this, med));
+        p.add(new BtnBook(this, med));
+        p.add(new BtnSearch(this, med));
+        getContentPane().add(new LblDisplay(med), "North");
+        getContentPane().add(p, "South");
+        setSize(400, 200);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        Command comd = (Command) ae.getSource();
+        comd.execute();
+    }
+
+    public static void main(String[] args) {
+        new MediatorDemo();
+    }
+
+}
+```
 > Memento
 
 - Sem violar o princípio de encapsulamento, captura e externaliza o estado interno de um objeto de forma a poder restaurar o objeto a este estado mais tarde.
+```
+import java.util.List;
+import java.util.ArrayList;
+class Originator {
+    private String state;
+    // The class could also contain additional data that is not part of the
+    // state saved in the memento..
+ 
+    public void set(String state) {
+        this.state = state;
+        System.out.println("Originator: Setting state to " + state);
+    }
+ 
+    public Memento saveToMemento() {
+        System.out.println("Originator: Saving to Memento.");
+        return new Memento(this.state);
+    }
+ 
+    public void restoreFromMemento(Memento memento) {
+        this.state = memento.getSavedState();
+        System.out.println("Originator: State after restoring from Memento: " + state);
+    }
+ 
+    public static class Memento {
+        private final String state;
 
+        public Memento(String stateToSave) {
+            state = stateToSave;
+        }
+ 
+        // accessible by outer class only
+        private String getSavedState() {
+            return state;
+        }
+    }
+}
+ 
+class Caretaker {
+    public static void main(String[] args) {
+        List<Originator.Memento> savedStates = new ArrayList<Originator.Memento>();
+ 
+        Originator originator = new Originator();
+        originator.set("State1");
+        originator.set("State2");
+        savedStates.add(originator.saveToMemento());
+        originator.set("State3");
+        // We can request multiple mementos, and choose which one to roll back to.
+        savedStates.add(originator.saveToMemento());
+        originator.set("State4");
+ 
+        originator.restoreFromMemento(savedStates.get(1));   
+    }
+}
+```
 > Observer
 
 - Define uma dependência um-para-muitos entre objetos de forma a avisar e atualizar vários objetos quando o estado de um objeto muda.
+```
+import java.util.Observable;
+import java.util.Scanner;
 
+class EventSource extends Observable implements Runnable {
+    public void run() {
+        while (true) {
+            String response = new Scanner(System.in).next();
+            setChanged();
+            notifyObservers(response);
+        }
+    }
+}
+```
+```
+import java.util.Observable;
+import java.util.Observer;
+
+public class MyApp {
+    public static void main(String[] args) {
+        System.out.println("Enter Text: ");
+        EventSource eventSource = new EventSource();
+
+        eventSource.addObserver((obj, arg) -> {
+            System.out.println("Received response: " + arg);
+        });
+
+        new Thread(eventSource).start();
+    }
+}
+```
 > State
 
 - Permite que um objeto altere seu comportamento quando seu estado interno muda. O objeto estará aparentemente mudando de classe com a mudança de estado.
+```
+interface Statelike {
+    void writeName(StateContext context, String name);
+}
 
+class StateLowerCase implements Statelike {
+    @Override
+    public void writeName(final StateContext context, final String name) {
+        System.out.println(name.toLowerCase());
+        context.setState(new StateMultipleUpperCase());
+    }
+}
+
+class StateMultipleUpperCase implements Statelike {
+    /** Counter local to this state */
+    private int count = 0;
+
+    @Override
+    public void writeName(final StateContext context, final String name) {
+        System.out.println(name.toUpperCase());
+        /* Change state after StateMultipleUpperCase's writeName() gets invoked twice */
+        if(++count > 1) {
+            context.setState(new StateLowerCase());
+        }
+    }
+}
+```
+```
+class StateContext {
+    private Statelike myState;
+    StateContext() {
+        setState(new StateLowerCase());
+    }
+
+    /**
+     * Setter method for the state.
+     * Normally only called by classes implementing the State interface.
+     * @param newState the new state of this context
+     */
+    void setState(final Statelike newState) {
+        myState = newState;
+    }
+
+    public void writeName(final String name) {
+        myState.writeName(this, name);
+    }
+}
+```
+```
+public class DemoOfClientState {
+    public static void main(String[] args) {
+        final StateContext sc = new StateContext();
+
+        sc.writeName("Monday");
+        sc.writeName("Tuesday");
+        sc.writeName("Wednesday");
+        sc.writeName("Thursday");
+        sc.writeName("Friday");
+        sc.writeName("Saturday");
+        sc.writeName("Sunday");
+    }
+}
+```
 > Strategy
 
 - Define uma família de algoritmos, encapsula cada um, e deixe-os intercambiáveis. O padrão Strategy permite que o algoritmo varie independentemente dos clientes que o usam.
